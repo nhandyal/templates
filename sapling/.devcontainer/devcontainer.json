@@ -1,0 +1,7 @@
+{
+	"name": "sapling_build",
+	"build": {
+		"context": ".",
+		"dockerfile": "Dockerfile"
+	}
+}
