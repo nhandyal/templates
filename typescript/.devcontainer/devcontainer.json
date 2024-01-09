@@ -1,0 +1,19 @@
+{
+	"name": "typescript_template",
+	"build": {
+		"context": ".",
+		"dockerfile": "Dockerfile"
+	},
+	"initializeCommand": [
+		".devcontainer/scripts/prebuild.sh"
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"vscode.typescript-language-features",
+				"esbenp.prettier-vscode",
+				"Codeium.codeium"
+			]
+		}
+	}
+}
