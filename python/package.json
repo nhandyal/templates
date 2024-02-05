@@ -1,0 +1,12 @@
+{
+  "name": "python_template",
+  "version": "1.0.0",
+  "scripts": {
+    "clean": "./scripts/clean",
+    "fmt": "./scripts/fmt",
+    "lint": "./scripts/lint",
+    "rdx": "./scripts/rdx",
+    "t": "./scripts/t",
+    "pre-commit": "./scripts/pre-commit.sh"
+  }
+}

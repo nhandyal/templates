@@ -1,0 +1,79 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+import subprocess
+import sys
+from dataclasses import dataclass
+from typing import Optional
+
+
+@dataclass
+class UpdateFixtures:
+
+    test_file_path: str
+    base_config_path: str
+    override_config_path: Optional[str]
+
+    @staticmethod
+    def populate_parser(parser: argparse.ArgumentParser):
+        parser.add_argument("test_file_path", type=str, help="The test file to update fixtures for")
+        parser.add_argument('--base-config-path', type=str, required=True)
+        parser.add_argument('--override-config-path', type=str, required=False, default=None)
+
+    def update_fixtures(self):
+        try:
+            env = os.environ.copy()
+            env["UPDATE_FIXTURE_TESTS"] = "True"
+            env["BASE_CONFIG_PATH"] = self.base_config_path
+            if self.override_config_path:
+                env["OVERRIDE_CONFIG_PATH"] = self.override_config_path
+
+            if self.warn():
+                subprocess.check_call(
+                    f"pytest {self.test_file_path}",
+                    env=env,
+                    shell=True,
+                )
+            else:
+                print("Aborting...")
+        except subprocess.CalledProcessError as e:
+            sys.exit(e.returncode)
+        
+    def warn(self) -> bool:
+        # fmt: off
+        print("")
+        print("WARNING: You are about to use production configs in tests")
+        print("")
+        print("This is required for updating fixtures, but not for running them.")
+        print("The configs being used are:")
+        print("  BASE_CONFIG_PATH: " + self.base_config_path)
+        print("  OVERRIDE_CONFIG_PATH: " + self.override_config_path if self.override_config_path else "None")
+        print("")
+        print("Beware of unexpected queries or changes to prod services!")
+        print("Know what your tests are doing to ensure they don't create or alter prod data!")
+        print("")
+        return input("To proceed, enter yes: ") == "yes"
+        # fmt: on
+
+def main():
+    parser = argparse.ArgumentParser(prog='Test runner')
+    subparsers = parser.add_subparsers(dest='subcommand')
+
+    parser_update_fixtures = subparsers.add_parser('update-fixtures')
+    UpdateFixtures.populate_parser(parser_update_fixtures)
+
+    args = parser.parse_args()
+
+    if args.subcommand == 'update-fixtures':
+        update_fixtures = UpdateFixtures(args.test_file_path, args.base_config_path, args.override_config_path)
+        update_fixtures.update_fixtures()
+    else:
+        try:
+            subprocess.check_call("pytest")
+        except subprocess.CalledProcessError as e:
+            sys.exit(e.returncode)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+
+import os
+import subprocess
+import sys
+
+SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
+ROOT_DIR = os.path.dirname(SCRIPT_DIR)
+
+def main():
+    try:
+        subprocess.check_call("find " + ROOT_DIR + " -type d -name '__pycache__' -exec rm -rf {} +", shell=True)
+    except subprocess.CalledProcessError as e:
+        sys.exit(e.returncode)
+
+if __name__ == "__main__":
+    main()

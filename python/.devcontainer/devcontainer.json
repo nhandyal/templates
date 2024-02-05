@@ -1,0 +1,16 @@
+{
+	"name": "python_template",
+	"build": {
+		"context": ".",
+		"dockerfile": "Dockerfile"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"meta.sapling-scm",
+				"Codeium.codeium",
+				"ms-python.vscode-pylance"
+			]
+		}
+	}
+}

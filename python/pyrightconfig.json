@@ -1,0 +1,18 @@
+{
+    "include": [
+      "**/*.py"
+    ],
+    "exclude": [
+      "**/__pycache__",
+      "venv",
+      ".sl",
+      "python/main/gdrive.py"
+    ],
+    "typeCheckingMode": "strict",
+    "stubPath": "python/typings",
+    "reportMissingTypeStubs": true,
+    "reportMissingImports": true,
+    "reportUntypedFunctionDecorator": true,
+    "reportUntypedClassDecorator": true,
+    "reportUnknownMemberTypes": true
+}

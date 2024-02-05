@@ -1,0 +1,52 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
+ROOT_DIR = os.path.dirname(SCRIPT_DIR)
+BIN_DIR = Path(os.path.join(ROOT_DIR, "bin"))
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--all", action="store_true", help="Format all files")
+    parser.add_argument(
+        "--include-bin", action="store_true", help="Format files in the bin directory"
+    )
+    parser.add_argument(
+        "--include-dev-container",
+        action="store_true",
+        help="Format files in the .devcontainer directory",
+    )
+    args = parser.parse_args()
+
+    if args.all:
+        args.include_bin = True
+        args.include_dev_container = True
+
+    files_and_dirs = [ROOT_DIR]
+
+    if args.include_dev_container:
+        files_and_dirs += [os.path.join(ROOT_DIR, ".devcontainer")]
+
+    if args.include_bin:
+        files_and_dirs += [
+            os.path.join(BIN_DIR, f)
+            for f in os.listdir(BIN_DIR)
+            if os.path.isfile(os.path.join(BIN_DIR, f))
+        ]
+
+    for f in files_and_dirs:
+        try:
+            subprocess.check_call(f"isort {f}", shell=True)
+            subprocess.check_call(f"black {f}", shell=True)
+        except subprocess.CalledProcessError as e:
+            sys.exit(e.returncode)
+
+
+if __name__ == "__main__":
+    main()
