@@ -1,4 +1,4 @@
-FROM nhandyal/images:base_arm64
+FROM nhandyal/base:latest
 
 
 #######
@@ -23,9 +23,7 @@ RUN	/bin/sh -c set -x && \
     /bin/bash anaconda.sh -b -p /opt/conda && \
     rm anaconda.sh shasum && \
     ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
-    echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
     echo ". /opt/conda/etc/profile.d/conda.sh" >> /home/$USER_NAME/.bashrc && \
-    echo "conda activate base" >> ~/.bashrc && \
     echo "conda activate base" >> /home/$USER_NAME/.bashrc && \
     find /opt/conda/ -follow -type f -name '*.a' -delete && \
     find /opt/conda/ -follow -type f -name '*.js.map' -delete && \

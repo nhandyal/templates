@@ -102,6 +102,7 @@ def main():
 def multi_arch_build(build_config):
     push_or_load = "push" if build_config.push else "load"
     build_command = "\n".join([
+      f"BUILDKIT_PROGRESS=plain \\",
       f"docker buildx build \\",
       f"  --builder {BUILDER_NAME} \\",
       f"  --platform linux/amd64,linux/arm64 \\",

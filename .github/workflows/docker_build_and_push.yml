@@ -25,3 +25,7 @@ jobs:
       - name: Build and push base
         run: |
           ./devcontainer/build.py base --push --yes
+      
+      - name: Build and push conda
+        run: |
+          ./devcontainer/build.py conda --push --yes
