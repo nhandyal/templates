@@ -5,8 +5,9 @@ import os
 from pathlib import Path
 import subprocess
 
-DEVCONTAINER_DIR = os.path.dirname(os.path.realpath(__file__))
-ROOT_DIR = os.path.realpath(os.path.join(DEVCONTAINER_DIR, ".."))
+SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
+DEVCONTAINER_DIR = SCRIPT_DIR
+ROOT_DIR = os.path.normpath(os.path.realpath(os.path.join(DEVCONTAINER_DIR, "..")))
 BUILDER_NAME = "buildx_builder"
 
 """
@@ -72,10 +73,11 @@ def get_head_rev():
   return subprocess.check_output("git rev-parse --short HEAD", shell=True).decode("utf-8").strip()
 
 def main():
-  build_directories =  [d for d in os.listdir('.') if os.path.isdir(d) and d != ".devcontainer"]
+  build_directories = [os.path.join(DEVCONTAINER_DIR, d) for d in os.listdir(DEVCONTAINER_DIR)]
+  build_directories = [d for d in build_directories if os.path.isdir(d) and ".devcontainer" not in d]
 
   parser = argparse.ArgumentParser(description="Build script for docker images")
-  parser.add_argument("image_directory", choices=build_directories, help="The image directory to build")
+  parser.add_argument("image_directory", choices=[os.path.basename(d) for d in build_directories], help="The image directory to build")
   parser.add_argument("--push", action="store_true", help="Push the image to docker hub")
   parser.add_argument("--yes", action="store_true", help="Don't prompt for build confirmation")
   args = parser.parse_args()
