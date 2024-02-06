@@ -7,4 +7,4 @@ export EDITOR="vim"
 # Sapling configuration
 ulimit -n 1048576
 
-PATH="/workspaces/bin:~/.local/bin"
+PATH="$PATH:/workspaces/bin:~/.local/bin"
