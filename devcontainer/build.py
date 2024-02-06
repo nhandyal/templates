@@ -51,11 +51,12 @@ Note: Switching back to the "default" builder is not necessary unless specifical
 """
 
 class BuildConfig:
-  def __init__(self, build_context, dockerfile, image_name, push):
+  def __init__(self, build_context, dockerfile, image_name, push, yes):
     self.build_context = build_context
     self.dockerfile = dockerfile
     self.image_name = image_name
     self.push = push
+    self.yes = yes
 
 
 def assert_git_clean():
@@ -76,6 +77,7 @@ def main():
   parser = argparse.ArgumentParser(description="Build script for docker images")
   parser.add_argument("image_directory", choices=build_directories, help="The image directory to build")
   parser.add_argument("--push", action="store_true", help="Push the image to docker hub")
+  parser.add_argument("--yes", action="store_true", help="Don't prompt for build confirmation")
   args = parser.parse_args()
 
   assert_git_clean()
@@ -91,21 +93,8 @@ def main():
     dockerfile=os.path.normpath(os.path.realpath(os.path.join(image_directory, "Dockerfile"))), 
     image_name=f"nhandyal/{args.image_directory}",
     push=args.push,
+    yes=args.yes,
   ))
-
-
-  
-  
-  # build_cmd = f"docker build -f {abs_dockerfile} -t {image_name} {abs_build_context}"
-  # print(f"Building image {image_name}")
-  # print(build_cmd)
-  # print("")
-  # # prompt the user to continue, exit if not y
-  # if input("Do you want to continue? (y/n) ") != "y":
-  #   exit(0)
-
-  # subprocess.check_call(build_cmd, shell=True)
-
   
   
 def multi_arch_build(build_config):
@@ -124,8 +113,10 @@ def multi_arch_build(build_config):
     print("The following will be built:")
     print(build_command)
     print("")
-    if input("Do you want to continue? (y/n) ") != "y":
-      exit(0)
+
+    if not build_config.yes:
+      if input("Do you want to continue? (y/n) ") != "y":
+        exit(0)
       
     if build_config.push:
       subprocess.check_call(f"docker login", shell=True)
@@ -144,13 +135,6 @@ def multi_arch_build(build_config):
 
     # build the images
     subprocess.check_call(build_command, shell=True)
-    # subprocess.check_call(f"docker buildx build --builder sapling_multiarchbuilder --platform linux/amd64 -t nhandyal/sapling:latest-amd64 -f {ARTIFACTS_DIR}/Dockerfile_sapling_build {SAPLING_DIR}", shell=True)
-    # subprocess.check_call(f"docker push nhandyal/nhandyal-images:sapling_{CPU_ARCH}", shell=True)
-
-    # if build_config.push:
-    #   print("Pushing to docker hub")
-    #   subprocess.check_call(f"docker push {image_name}", shell=True)
-  
 
 
 if __name__ == "__main__":
