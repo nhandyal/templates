@@ -1,5 +1,9 @@
+# begin templates/python 
 *.env
 *.pyc
 *.DS_Store
 
 .py_cache/
+.pytest_cache/
+
+# end templates/python 

@@ -1,9 +1,5 @@
 {
-	"name": "python_template",
-	"build": {
-		"context": ".",
-		"dockerfile": "Dockerfile"
-	},
+	"image": "nhandyal/conda:140c582",
 	"customizations": {
 		"vscode": {
 			"extensions": [

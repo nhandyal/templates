@@ -5,11 +5,12 @@ import subprocess
 import sys
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
-ROOT_DIR = os.path.realpath(os.path.join(SCRIPT_DIR, ".."))
+ROOT_DIR = os.path.normpath(os.path.join(SCRIPT_DIR, ".."))
+PYTHON_DIR = os.path.join(ROOT_DIR, "python")
 
 def main():
     try:
-        subprocess.check_call("find " + ROOT_DIR + " -type d -name '__pycache__' -exec rm -rf {} +", shell=True)
+        subprocess.check_call("find " + PYTHON_DIR + " -type d -name '__pycache__' -exec rm -rf {} +", shell=True)
     except subprocess.CalledProcessError as e:
         sys.exit(e.returncode)
 

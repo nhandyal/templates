@@ -6,7 +6,6 @@
       "**/__pycache__",
       "venv",
       ".sl",
-      "python/main/gdrive.py"
     ],
     "typeCheckingMode": "strict",
     "stubPath": "python/typings",

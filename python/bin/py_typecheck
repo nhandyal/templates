@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+
+import subprocess
+import sys
+
+
+def main():
+    try:
+        subprocess.check_call("pyright")
+    except subprocess.CalledProcessError as e:
+        sys.exit(e.returncode)
+
+if __name__ == "__main__":
+    main()

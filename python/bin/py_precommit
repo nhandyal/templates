@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+set -e
+echo "Running Python pre-commit checks"
+
+echo ""
+echo "Running code formatters..."
+py_fmt
+echo "Done"
+
+echo ""
+echo "Running typecheckers..."
+py_typecheck
+echo "Done"
+
+echo ""
+echo "Running linters..."
+py_lint
+echo "Done"
+
+echo ""
+echo "Running code complexity checks..."
+py_rdx --no-color --min-rank C
+echo "Done"
+
+echo ""
+echo "Running tests..."
+py_test
+echo "Done"
+
+echo ""
+echo "Python pre-commit checks: Done"

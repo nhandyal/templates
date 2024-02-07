@@ -13,13 +13,13 @@ from colorama import Fore, Style
 from pydantic import BaseModel, RootModel
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
-ROOT_DIR = os.path.dirname(SCRIPT_DIR)
+ROOT_DIR = os.path.normpath(os.path.join(SCRIPT_DIR, ".."))
+PYTHON_DIR = os.path.join(ROOT_DIR, "python")
 
 
 class Config:
     INCLUDE_DIRECTORIES = [
-        Path(ROOT_DIR),
-        Path(os.path.join(ROOT_DIR, ".devcontainer")),
+        Path(PYTHON_DIR),
     ]
 
     colorize: bool = True
