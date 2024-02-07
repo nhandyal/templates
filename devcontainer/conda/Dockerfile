@@ -24,8 +24,6 @@ RUN	/bin/sh -c set -x && \
     /bin/bash miniconda.sh -b -p /opt/conda && \
     rm miniconda.sh shasum && \
     ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
-    echo "\nsource /opt/conda/etc/profile.d/conda.sh" >> /home/$USER_NAME/.bashrc && \
-    echo "conda activate base" >> /home/$USER_NAME/.bashrc && \
     find /opt/conda/ -follow -type f -name '*.a' -delete && \
     find /opt/conda/ -follow -type f -name '*.js.map' -delete && \
     /opt/conda/bin/conda clean -afy
