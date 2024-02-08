@@ -12,7 +12,7 @@
         ".eslintignore",
         ".eslintrc.json",
         ".prettierrc",
-        "tsconfig.json",
+        "tsconfig.json"
     ],
     "copy_dir": [
         "reference",

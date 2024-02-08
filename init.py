@@ -81,12 +81,12 @@ class Processor:
     def _get_source_and_target_paths(self, source_path: str, target_project_root: str) -> Tuple[str, str]:
         return os.path.join(self.template_project_root, source_path), os.path.join(target_project_root, source_path)
     
-    def process_all(self) -> None:
+    def process_all(self, template_name: str) -> None:
         if not os.path.exists(self.target_project_root):
             print(f"Error: {self.target_project_root} does not exist.")
             exit(1)
         
-        if input(f"Initialize a python project in {self.target_project_root}? (y/n): ") != "y":
+        if input(f"Initialize a {template_name} project in {self.target_project_root}? (y/n): ") != "y":
             exit(0)
 
         self.process_merge_json()
@@ -150,9 +150,9 @@ def main():
     parser.add_argument("project_name", type=str, help="The target project to initialize into")
     args = parser.parse_args()
 
-    init_config_path = f"{SCRIPT_DIR}/{args.template_name}/init_config.json"    
+    init_config_path = f"{SCRIPT_DIR}/{args.template_name}/init_config.json"
     config = InitConfig(**json.load(open(init_config_path)))
-    Processor(config, args.template_name, args.project_name).process_all()
+    Processor(config, args.template_name, args.project_name).process_all(args.template_name)
 
     print("")
     print("FINISHED INITIALIZING PROJECT")

@@ -8,6 +8,6 @@
     "ts_compile": "tsc",
     "ts_lint": "eslint",
     "ts_lint-fix": "eslint fix",
-    "ts_fmt": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
+    "ts_fmt": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'"
   }
 }
