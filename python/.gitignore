@@ -1,3 +1,4 @@
+
 # begin templates/python 
 *.env
 *.pyc
@@ -6,4 +7,5 @@
 .py_cache/
 .pytest_cache/
 
+node_modules
 # end templates/python 

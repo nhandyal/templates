@@ -10,7 +10,7 @@ echo "Done"
 
 echo ""
 echo "Running typecheckers..."
-py_typecheck
+pyright
 echo "Done"
 
 echo ""

@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+
+import os
+import subprocess
+
+
+SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
+ROOT_DIR = os.path.normpath(os.path.join(SCRIPT_DIR, ".."))
+
+def main():
+    try:
+        os.system(f"{ROOT_DIR}/node_modules/.bin/pyright")
+    except subprocess.CalledProcessError as e:
+        exit(e.returncode)
+
+if __name__ == "__main__":
+    main()
