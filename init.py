@@ -144,7 +144,7 @@ def main():
     parser.add_argument(
         "template_name", 
         type=str,
-        choices=["python"],
+        choices=["python", "sapling", "typescript"],
         help="The name of the template to initialize",
     )
     parser.add_argument("project_name", type=str, help="The target project to initialize into")

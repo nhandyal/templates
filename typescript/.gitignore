@@ -1,2 +1,5 @@
+
+# begin templates/ts 
 node_modules
-build
+ts_build
+# end templates/ts 

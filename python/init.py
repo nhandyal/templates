@@ -21,8 +21,8 @@ def main():
         print("Expected installation to be happening in a conda environment.")
         exit(1)
     
-    os.system(f"pip3 install -r {target_project_root}/requirements.txt")
-    os.system(f"npm i")
+    subprocess.check_call(f"pip3 install -r {target_project_root}/requirements.txt", cwd=target_project_root, shell=True)
+    subprocess.check_call(f"npm i", cwd=target_project_root, shell=True)
 
 
 if __name__ == "__main__":

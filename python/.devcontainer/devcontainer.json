@@ -1,5 +1,5 @@
 {
-	"image": "nhandyal/conda:140c582",
+	"image": "nhandyal/conda:latest",
 	"customizations": {
 		"vscode": {
 			"extensions": [

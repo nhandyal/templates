@@ -1,12 +1,6 @@
 {
 	"name": "typescript_template",
-	"build": {
-		"context": ".",
-		"dockerfile": "Dockerfile"
-	},
-	"initializeCommand": [
-		".devcontainer/scripts/prebuild.sh"
-	],
+	"image": "nhandyal/base:latest",
 	"customizations": {
 		"vscode": {
 			"extensions": [

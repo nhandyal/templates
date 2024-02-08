@@ -1,0 +1,22 @@
+{
+    "merge_json": [
+        ".devcontainer/devcontainer.json",
+        ".vscode/settings.json",
+        "package.json"
+    ],
+    "merge_list": [],
+    "append_file": [
+        ".gitignore"
+    ],
+    "copy_file": [
+        ".eslintignore",
+        ".eslintrc.json",
+        ".prettierrc",
+        "tsconfig.json",
+    ],
+    "copy_dir": [
+        "reference",
+        "ts"
+    ],
+    "init_script": "init.py"
+}
