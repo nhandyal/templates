@@ -57,8 +57,8 @@ def main():
     git_remote_url = get_git_remote_url(target_project_root)
     commands = [
         f"sl clone {git_remote_url} /tmp/repo",
-        "cp -r /tmp/repo/.sl /workspaces",
-        "rm -rf /workspaces/.git /tmp/repo",
+        f"cp -r /tmp/repo/.sl {target_project_root}",
+        f"rm -rf {target_project_root}/.git /tmp/repo",
     ]
     for command in commands:
         subprocess.check_call(command, shell=True, cwd=target_project_root)
