@@ -1,0 +1,8 @@
+{
+    "merge_json": [],
+    "merge_list": [],
+    "append_file": [],
+    "copy_file": [],
+    "copy_dir": [],
+    "init_script": "init.py"
+}
