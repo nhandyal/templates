@@ -9,6 +9,7 @@
         "requirements.txt"
     ],
     "append_file": [
+        ".devcontainer/Dockerfile",
         ".gitignore"
     ],
     "copy_file": [
