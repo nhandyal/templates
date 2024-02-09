@@ -15,7 +15,7 @@ def main():
     bashrc_path = os.path.expanduser("~/.bashrc")
     dockerfile_path = f"{target_project_root}/.devcontainer/Dockerfile"
     with open(dockerfile_path, "a") as f:
-        f.write(f'RUN printf "\nexport PATH=$PATH:{target_project_root}/bin # added by templates/python/init.py\n"  >> {bashrc_path}\n')
+        f.write(f"RUN printf '\nexport PATH=$PATH:{target_project_root}/bin # added by templates/python/init.py\n'  >> {bashrc_path}\n")
 
     # install dependencies
     which_pip3 = subprocess.check_output(["which", "pip3"]).decode("utf-8").strip()
