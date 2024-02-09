@@ -1,1 +1,1 @@
-FROM nhandyal/conda:81c2021
+FROM nhandyal/base:ac00be2
