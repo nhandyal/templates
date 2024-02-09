@@ -15,7 +15,7 @@ ENV TZ=Etc/UTC
 #######
 # Install system packages 1
 RUN apt-get update -y && apt-get install -y \
-    ca-certificates curl git gnupg
+    ca-certificates curl git gnupg software-properties-common
 
 #######
 # Get GH ready to install
@@ -31,10 +31,17 @@ RUN mkdir -p /etc/apt/keyrings && \
     echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
 
 #######
+# Get Python ready to install
+RUN add-apt-repository -y ppa:deadsnakes/ppa -y
+
+#######
 # Install system packages 2
 RUN apt-get update -y && apt-get install -y \
-    coreutils cython3 dpkg-dev gcc g++ gh libffi-dev libssl-dev locales make nodejs openssh-client pkg-config procps python3.8 python3.8-dev python3.8-distutils python3-pip sudo vim wget && \
-    rm -rf /var/lib/apt/lists/*
+    coreutils cython3 dpkg-dev gcc g++ gh libffi-dev libssl-dev locales make nodejs openssh-client pkg-config procps python3.11 python3.11-dev python3.11-distutils sudo vim wget && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm /usr/bin/python3 && \
+    ln -s /usr/bin/python3.11 /usr/bin/python3 && \
+    curl -sS https://bootstrap.pypa.io/get-pip.py | python3
 
 #######
 # Install sapling
