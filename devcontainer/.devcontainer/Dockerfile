@@ -33,7 +33,7 @@ RUN mkdir -p /etc/apt/keyrings && \
 #######
 # Install system packages 2
 RUN apt-get update -y && apt-get install -y \
-    coreutils cython3 dpkg-dev gcc g++ gh libffi-dev libssl-dev locales make nodejs openssh-client pkg-config procps python3.8 python3.8-dev python3.8-distutils sudo vim wget && \
+    coreutils cython3 dpkg-dev gcc g++ gh libffi-dev libssl-dev locales make nodejs openssh-client pkg-config procps python3.8 python3.8-dev python3.8-distutils python3-pip sudo vim wget && \
     rm -rf /var/lib/apt/lists/*
 
 #######
