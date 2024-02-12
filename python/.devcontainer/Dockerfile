@@ -1,1 +1,1 @@
-FROM nhandyal/base:ac00be2
+FROM nhandyal/base:latest

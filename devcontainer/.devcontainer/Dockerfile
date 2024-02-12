@@ -37,7 +37,7 @@ RUN add-apt-repository -y ppa:deadsnakes/ppa -y
 #######
 # Install system packages 2
 RUN apt-get update -y && apt-get install -y \
-    coreutils cython3 dpkg-dev gcc g++ gh libffi-dev libssl-dev locales make nodejs openssh-client pkg-config procps python3.11 python3.11-dev python3.11-distutils sudo vim wget && \
+    coreutils cython3 dpkg-dev gcc g++ gh libffi-dev libssl-dev locales make nodejs openssh-client pkg-config procps python3.11 python3.11-dev python3.11-distutils sudo vim wget sqlite3 && \
     rm -rf /var/lib/apt/lists/* && \
     rm /usr/bin/python3 && \
     ln -s /usr/bin/python3.11 /usr/bin/python3 && \
