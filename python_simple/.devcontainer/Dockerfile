@@ -7,6 +7,7 @@ FROM nhandyal/base:latest
 RUN echo "Update PATH in Dockerfile" && \
     exit 1
 
-RUN pushd '../' && \
-    pip3 install -r requirements.txt && \
-    npm i
+# Can't do this because the code is not part of the image yet
+# RUN cd '../' && \
+#     pip3 install -r requirements.txt && \
+#     npm i
