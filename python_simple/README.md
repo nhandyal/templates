@@ -10,3 +10,14 @@ Use the script init_project to initialize a target folder with the python_simple
 ```
 rsync -v --progress --exclude='.git' ./ abs/path/to/target/project_root
 ```
+
+## Using Poetry
+- https://python-poetry.org/docs/basic-usage/
+```
+# activates the virtual env that poetry installs dependencies to
+# this is a subshell
+poetry shell
+
+# exit the virtual env
+exit
+```

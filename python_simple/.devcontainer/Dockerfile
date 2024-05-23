@@ -1,5 +1,7 @@
 FROM nhandyal/base:latest
 
+RUN curl -sSL https://install.python-poetry.org | python3 -
+
 # Replace the appropriate values for your project. Remove after updating.
 # {project_root} is the abs path of the project INSIDE the container.
 # 
