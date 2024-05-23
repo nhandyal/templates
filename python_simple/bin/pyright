@@ -9,7 +9,7 @@ ROOT_DIR = os.path.normpath(os.path.join(SCRIPT_DIR, ".."))
 
 def main():
     try:
-        os.system(f"{ROOT_DIR}/node_modules/.bin/pyright")
+        os.system(f"{ROOT_DIR}/bin/node_modules/.bin/pyright")
     except subprocess.CalledProcessError as e:
         exit(e.returncode)
 

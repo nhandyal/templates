@@ -4,6 +4,7 @@
     ],
     "exclude": [
       "**/__pycache__",
+      ".venv",
       ".sl",
     ],
     "typeCheckingMode": "strict",
