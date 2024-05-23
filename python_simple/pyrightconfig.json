@@ -1,0 +1,17 @@
+{
+    "include": [
+      "**/*.py"
+    ],
+    "exclude": [
+      "**/__pycache__",
+      "venv",
+      ".sl",
+    ],
+    "typeCheckingMode": "strict",
+    "stubPath": "python/typings",
+    "reportMissingTypeStubs": true,
+    "reportMissingImports": true,
+    "reportUntypedFunctionDecorator": true,
+    "reportUntypedClassDecorator": true,
+    "reportUnknownMemberTypes": true
+}

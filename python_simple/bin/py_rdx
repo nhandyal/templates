@@ -1,0 +1,162 @@
+#!/usr/bin/env python3
+
+import argparse
+import json
+import os
+import subprocess
+import sys
+from collections import defaultdict
+from pathlib import Path
+from typing import Any, Dict, List, Literal, Optional, Set
+
+from colorama import Fore, Style
+from pydantic import BaseModel, RootModel
+
+SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
+ROOT_DIR = os.path.normpath(os.path.join(SCRIPT_DIR, ".."))
+PYTHON_DIR = os.path.join(ROOT_DIR, "python")
+
+
+class Config:
+    INCLUDE_DIRECTORIES = [
+        Path(PYTHON_DIR),
+    ]
+
+    colorize: bool = True
+    min_rank: "RadonRanks" = "C"
+
+
+RadonTypes = Literal["function", "method", "class"]
+RadonRanks = Literal["A", "B", "C", "D", "E", "F"]
+RadonTypeColorFormat = {
+    "function": f"{Fore.MAGENTA}",
+    "method": f"{Fore.CYAN}",
+    "class": f"{Fore.BLUE}",
+}
+RadonRankColorFormat = {
+    "A": f"{Fore.GREEN}",
+    "B": f"{Fore.GREEN}",
+    "C": f"{Fore.YELLOW}",
+    "D": f"{Fore.MAGENTA}",
+    "E": f"{Fore.RED}",
+    "F": f"{Fore.RED}",
+}
+
+
+class RadonTypeResult(BaseModel):
+    type: RadonTypes
+    rank: RadonRanks
+    classname: Optional[str] = None
+    methods: List["RadonTypeResult"] = []
+    endline: int
+    complexity: int
+    col_offset: int
+    lineno: int
+    name: str
+    closures: List["RadonTypeResult"] = []
+
+    def get_type_abbrv(self, colorize: bool) -> str:
+        type_abbrv = self.type[0].upper()
+        if colorize:
+            return f"{RadonTypeColorFormat[self.type]}{type_abbrv}{Fore.RESET}{Style.RESET_ALL}"
+        else:
+            return type_abbrv
+
+    def get_rank(self, colorize: bool) -> str:
+        if colorize:
+            return f"{RadonRankColorFormat[self.rank]}{self.rank}{Fore.RESET}{Style.RESET_ALL}"
+        else:
+            return self.rank
+
+    def print(
+        self, c: Config, indent: int = 1, printed_results: Set[str] = set()
+    ) -> None:
+        name = f"{self.classname}.{self.name}" if self.classname else self.name
+        if name in printed_results:
+            return
+
+        indent_str = "  " * (indent * 2)
+        print(
+            f"{indent_str}{self.get_type_abbrv(c.colorize)} {self.lineno}:{self.col_offset} {name} -- {self.get_rank(c.colorize)}:{self.complexity}"
+        )
+        printed_results.add(name)
+
+        if self.type == "class":
+            sorted_methods = sorted(self.methods, key=lambda x: x.name)
+            for m in sorted_methods:
+                m.print(c=c, indent=indent + 1, printed_results=printed_results)
+
+        sorted_closures = sorted(self.closures, key=lambda x: x.name)
+        for m in sorted_closures:
+            m.print(c=c, indent=indent + 1, printed_results=printed_results)
+
+
+class RadonResult(RootModel[Dict[str, List[RadonTypeResult]]]):
+    root: Dict[str, List[RadonTypeResult]]
+
+    def is_empty(self) -> bool:
+        return len(self.root) == 0
+
+    def print_file(self, file: str, c: Config) -> None:
+        results_by_type: Dict[RadonTypes, List[RadonTypeResult]] = defaultdict(list)
+        for tr in self.root[file]:
+            results_by_type[tr.type].append(tr)
+        results_by_type = {
+            k: sorted(v, key=lambda x: x.name) for k, v in results_by_type.items()
+        }
+
+        type_print_order = ["class", "method", "function"]
+        printed_results: Set[str] = set()
+
+        print(f"{file}:")
+        for t in type_print_order:
+            if t in results_by_type:
+                for tr in results_by_type[t]:
+                    tr.print(c=c, printed_results=printed_results)
+
+        # blanket print all incase we missed a type above
+        # ideally nothing should happen since printed result
+        # already contains all definitions in the file.
+        for tr in self.root[file]:
+            tr.print(c=c, printed_results=printed_results)
+
+    def print(self, c: Config) -> None:
+        sorted_files = sorted(self.root.keys())
+        for f in sorted_files:
+            self.print_file(f, c)
+
+
+def main():
+    global Colorize
+
+    parser = argparse.ArgumentParser(description="Run radon complexity checks")
+    parser.add_argument("--no-color", action="store_true", help="Suppress colorization")
+    parser.add_argument(
+        "--min-rank",
+        type=str,
+        choices=["A", "B", "C", "D", "E", "F"],
+        default="C",
+        help="Minimum rank to report",
+    )
+    args = parser.parse_args()
+
+    config = Config()
+    config.colorize = not args.no_color
+    config.min_rank = args.min_rank
+
+    data: Any = {}
+    for d in config.INCLUDE_DIRECTORIES:
+        json_str = subprocess.check_output(
+            ["radon", "cc", d, f"-n{config.min_rank}", "--json"]
+        ).decode("utf-8")
+        data.update(json.loads(json_str))
+
+    radon_result = RadonResult.model_validate(data)
+
+    if not radon_result.is_empty():
+        radon_result.print(c=config)
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

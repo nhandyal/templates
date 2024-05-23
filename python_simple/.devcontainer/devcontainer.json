@@ -1,0 +1,11 @@
+{
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"meta.sapling-scm",
+				"Codeium.codeium",
+				"ms-python.vscode-pylance"
+			]
+		}
+	}
+}
