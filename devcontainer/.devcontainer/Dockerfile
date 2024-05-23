@@ -58,6 +58,8 @@ RUN ARCH=$(dpkg --print-architecture) && \
     curl -L -o '/etc/locale.gen' 'https://storage.googleapis.com/regulus-public/locale.gen' && \
     locale-gen
 
+COPY scripts/sapling_init /usr/local/bin
+
 # Create a new group and user with the specified IDs and names
 RUN if ! getent group $GROUP_NAME; then \
     groupadd -g $GROUP_ID $GROUP_NAME; \
